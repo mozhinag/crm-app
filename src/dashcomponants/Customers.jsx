@@ -39,7 +39,7 @@ function Customers() {
 
       <div style={{
         width: '90%', // Adjust width as needed
-        backgroundColor: '#f0f0f0', // Sets a different background color for the left container
+       
         padding: '20px',
         borderRadius: '10px', // Optional: Adds rounded corners
         marginLeft: '90px',
