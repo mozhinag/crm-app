@@ -11,7 +11,7 @@ function CustSideBar() {
 
   const navigate = useNavigate();
   const logoutHandler = () => {
-
+    localStorage.removeItem("token")
     navigate('/login');
   };
 

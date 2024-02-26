@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 function ManagerSideBar() {
   const navigate = useNavigate();
   const logoutHandler = () => {
-
+    localStorage.removeItem("token")
     navigate('/login');
   };
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);

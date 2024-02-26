@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaHouseChimney, FaUsers, FaFirstOrder,  } from "react-icons/fa6";
+import { FaHouseChimney, FaUsers, FaFirstOrder, } from "react-icons/fa6";
 import { FaProductHunt, FaCartArrowDown } from "react-icons/fa";
 
 import { LuLogOut } from "react-icons/lu";
@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 function SalesSideBar() {
     const navigate = useNavigate();
     const logoutHandler = () => {
-
+        localStorage.removeItem("token")
         navigate('/login');
     };
 

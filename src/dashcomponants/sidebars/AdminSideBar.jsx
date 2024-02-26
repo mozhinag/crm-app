@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaHouseChimney, FaUsers, FaFirstOrder,  FaLaptop, FaFileLines, FaChevronDown, FaChevronRight } from "react-icons/fa6";
+import { FaHouseChimney, FaUsers, FaFirstOrder, FaLaptop, FaFileLines, FaChevronDown, FaChevronRight } from "react-icons/fa6";
 import { FaProductHunt, FaCartArrowDown, FaTicketAlt } from "react-icons/fa";
 import { IoMdSettings } from "react-icons/io";
 import { HiUsers } from "react-icons/hi";
@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 function AdminSideBar() {
   const navigate = useNavigate();
   const logoutHandler = () => {
-
+    localStorage.removeItem("token")
     navigate('/login');
   };
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -54,9 +54,9 @@ function AdminSideBar() {
                 <li><Link to='/admindash/userlist' style={linkStyle}><HiUsers />Users List</Link></li>
                 <li><Link to='/admindash/profilesettings' style={linkStyle}><FaUsersCog />Profile Settings</Link></li>
               </ul>
-           )} 
-           </li> 
-            <li> 
+            )}
+          </li>
+          <li>
             <button onClick={logoutHandler} style={{ ...linkStyle, background: 'none', border: 'none', cursor: 'pointer' }}>
               <LuLogOut size="20" style={{ marginRight: '12px' }} />Logout
             </button>
