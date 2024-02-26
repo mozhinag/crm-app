@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:5000/tickets';
+const BASE_URL = 'https://server-crm-yowd.onrender.com/tickets';
 
 export const addTicket = createAsyncThunk(
     'tickets/addTicket',

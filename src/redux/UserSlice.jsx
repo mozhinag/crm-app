@@ -5,7 +5,7 @@ export const registerUser = createAsyncThunk(
     'user/register',
     async (userData, { rejectWithValue }) => {
         try {
-            const response = await axios.post('http://localhost:5000/auth/register', userData);
+            const response = await axios.post('https://server-crm-yowd.onrender.com/auth/register', userData);
             return { ...response.data, password: undefined };
         } catch (error) {
             if (!error.response) {
@@ -29,7 +29,7 @@ export const loginUser = createAsyncThunk(
     'user/login',
     async (userData, { rejectWithValue }) => {
         try {
-            const response = await axios.post('http://localhost:5000/auth/login', userData);
+            const response = await axios.post('https://server-crm-yowd.onrender.com/auth/login', userData);
             
         
             localStorage.setItem('token', response.data.token);

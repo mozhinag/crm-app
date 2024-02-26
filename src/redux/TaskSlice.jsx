@@ -2,7 +2,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:5000/tasks';
+const BASE_URL = 'https://server-crm-yowd.onrender.com/tasks';
 
 export const addTask = createAsyncThunk(
   'tasks/addTask',
