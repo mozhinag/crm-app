@@ -18,10 +18,10 @@ function SalesSideBar() {
         textDecoration: 'none',
         color: 'black',
         textTransform: 'capitalize',
-        marginTop: '20px', // Adjust the top margin as per your design
+        marginTop: '20px', 
         display: 'flex',
         alignItems: 'center',
-        gap: '12px' // This creates space between the icon and the text
+        gap: '12px' 
     };
 
 
