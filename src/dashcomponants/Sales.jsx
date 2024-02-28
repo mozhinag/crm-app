@@ -5,12 +5,12 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
 import { Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import { FaPlus } from "react-icons/fa";
 import AddSaleModal from './modals/AddSaleModal';
-// import { useParams } from 'react-router-dom';
+
 
 function Sales() {
   const dispatch = useDispatch();
   const sales = useSelector((state) => state.sales.list);
-  // const {id} = useParams();
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingSale, setEditingSale] = useState(null); 
 
