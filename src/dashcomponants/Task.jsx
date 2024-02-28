@@ -8,8 +8,8 @@ import AddTaskModal from './modals/AddTaskModal';
 import { useParams } from 'react-router-dom';
 function Task() {
   const dispatch = useDispatch();
-  const {id} = useParams();
-  console.log(id)
+  const {_id} = useParams();
+  console.log(_id)
   const tasks = useSelector((state) => state.tasks.list);
   console.log(tasks);
   console.log('Type of tasks:', typeof tasks);
