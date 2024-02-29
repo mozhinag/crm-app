@@ -5,8 +5,8 @@ import { addTicket, updateTicket,getTickets } from '../../redux/TicketSlice';
 
 function AddTicketModal({ open, handleClose, ticket = null }) {
   const dispatch = useDispatch();
-  const [successMessage, setSuccessMessage] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+  // const [successMessage, setSuccessMessage] = useState('');
+  // const [errorMessage, setErrorMessage] = useState('');
   const [ticketDetails, setTicketDetails] = useState({
     ticketcode: '',
     subject: '',
@@ -39,23 +39,23 @@ function AddTicketModal({ open, handleClose, ticket = null }) {
 
   const handleSubmit = () => {
 
-    setSuccessMessage('');
-    setErrorMessage('');
+    // setSuccessMessage('');
+    // setErrorMessage('');
   
     if (ticket && ticket._id) {
       dispatch(updateTicket({ id: ticket._id, updateData: ticketDetails }))
         .unwrap()
         .then(() => {
-          setSuccessMessage('ticket updated successfully.');
+          // setSuccessMessage('ticket updated successfully.');
 
           dispatch(getTickets()).catch(error => {
             console.error('Failed to refresh ticket:', error);
-            setErrorMessage('Failed to refresh ticket. Please try again.');
+            // setErrorMessage('Failed to refresh ticket. Please try again.');
           });
         })
         .catch(error => {
           console.error('Failed to update ticket:', error);
-          setErrorMessage('Failed to update the ticket. Please try again.');
+          // setErrorMessage('Failed to update the ticket. Please try again.');
         })
         .finally(() => {
           handleClose();
@@ -64,16 +64,16 @@ function AddTicketModal({ open, handleClose, ticket = null }) {
         dispatch(addTicket(ticketDetails))
         .unwrap()
         .then(() => {
-          setSuccessMessage('ticket added successfully.');
+          // setSuccessMessage('ticket added successfully.');
 
           dispatch(getTickets()).catch(error => {
             console.error('Failed to refresh ticket:', error);
-            setErrorMessage('Failed to refresh ticket. Please try again.');
+            // setErrorMessage('Failed to refresh ticket. Please try again.');
           });
         })
         .catch(error => {
           console.error('Failed to add ticket:', error);
-          setErrorMessage('Failed to add the ticket. Please try again.');
+          // setErrorMessage('Failed to add the ticket. Please try again.');
         })
         .finally(() => {
           handleClose();
@@ -82,7 +82,7 @@ function AddTicketModal({ open, handleClose, ticket = null }) {
    
      else {
       console.error('task ID is undefined. Cannot update task.');
-      setErrorMessage('task ID is undefined. Cannot process the task.');
+      // setErrorMessage('task ID is undefined. Cannot process the task.');
       handleClose(); 
     }
   };

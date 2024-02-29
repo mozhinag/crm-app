@@ -36,6 +36,7 @@ function Sales() {
             setError('Failed to refresh the Sales list. Please try again.');
           });
         setError(''); 
+        error('');
       })
       .catch((error) => {
       

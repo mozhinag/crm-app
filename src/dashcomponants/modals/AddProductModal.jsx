@@ -58,7 +58,8 @@ function AddproductModal({ isOpen, onClose, product = null }) {
  
     setSuccessMessage('');
     setErrorMessage('');
-  
+    successMessage('');
+    errorMessage('');
     let dispatchOperation;
     if (product && product._id) { 
       dispatchOperation = dispatch(updateProduct({ id: product._id, updateData: productDetails }));

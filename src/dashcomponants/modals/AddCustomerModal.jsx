@@ -73,6 +73,7 @@ function AddCustomerModal({ open, handleClose, customer }) {
                             dispatch(getCustomers()); 
                             handleClose(); 
                             setError(''); 
+                            error('');
                           })
                           .catch((error) => {
                             console.error('Operation failed:', error);

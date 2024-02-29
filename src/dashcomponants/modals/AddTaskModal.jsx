@@ -5,8 +5,8 @@ import { Dialog, DialogTitle, DialogContent, TextField, DialogActions, FormContr
 
 function AddTaskModal({ isOpen, onClose, task = null }) {
     const dispatch = useDispatch();
-    const [successMessage, setSuccessMessage] = useState('');
-    const [errorMessage, setErrorMessage] = useState('');
+    // const [successMessage, setSuccessMessage] = useState('');
+    // const [errorMessage, setErrorMessage] = useState('');
 
 
     const [taskDetails, setTaskDetails] = useState({
@@ -42,23 +42,23 @@ function AddTaskModal({ isOpen, onClose, task = null }) {
 
     const handleSubmit = () => {
 
-        setSuccessMessage('');
-        setErrorMessage('');
+        // setSuccessMessage('');
+        // setErrorMessage('');
       
         if (task && task._id) { 
           dispatch(updateTask({ id: task._id, updateData: taskDetails }))
             .unwrap()
             .then(() => {
-              setSuccessMessage('task updated successfully.');
+            //   setSuccessMessage('task updated successfully.');
              
               dispatch(getTasks()).catch(error => {
                 console.error('Failed to refresh task:', error);
-                setErrorMessage('Failed to refresh task. Please try again.');
+                // setErrorMessage('Failed to refresh task. Please try again.');
               });
             })
             .catch(error => {
               console.error('Failed to update task:', error);
-              setErrorMessage('Failed to update the task. Please try again.');
+            //   setErrorMessage('Failed to update the task. Please try again.');
             })
             .finally(() => {
               onClose(); 
@@ -67,23 +67,23 @@ function AddTaskModal({ isOpen, onClose, task = null }) {
           dispatch(addTask(taskDetails))
             .unwrap()
             .then(() => {
-              setSuccessMessage('task added successfully.');
+            //   setSuccessMessage('task added successfully.');
             
               dispatch(getTasks()).catch(error => {
                 console.error('Failed to refresh task:', error);
-                setErrorMessage('Failed to refresh task. Please try again.');
+                // setErrorMessage('Failed to refresh task. Please try again.');
               });
             })
             .catch(error => {
               console.error('Failed to add task:', error);
-              setErrorMessage('Failed to add the task. Please try again.');
+            //   setErrorMessage('Failed to add the task. Please try again.');
             })
             .finally(() => {
               onClose(); 
             });
         } else {
           console.error('task ID is undefined. Cannot update task.');
-          setErrorMessage('task ID is undefined. Cannot process the task.');
+        //   setErrorMessage('task ID is undefined. Cannot process the task.');
           onClose(); 
         }
       };

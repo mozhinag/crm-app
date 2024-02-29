@@ -10,7 +10,7 @@ function Products() {
     const dispatch = useDispatch();
     
     const products = useSelector((state) => state.products.list);
-   const [error,setError]=useState('');
+//    const [error,setError]=useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingProduct, setEditingProduct] = useState(null);
 
@@ -34,14 +34,14 @@ function Products() {
               .catch((error) => {
               
                 console.error('Failed to refresh Products list:', error);
-                setError('Failed to refresh theProducts list. Please try again.');
+                // setError('Failed to refresh theProducts list. Please try again.');
               });
-            setError(''); 
+            // setError(''); 
           })
           .catch((error) => {
           
             console.error('Failed to delete Product:', error);
-            setError('Failed to delete the Product. Please try again.');
+            // setError('Failed to delete the Product. Please try again.');
           });
       };
       

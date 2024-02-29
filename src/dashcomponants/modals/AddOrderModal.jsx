@@ -6,8 +6,8 @@ import { Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button,Me
 
 function AddOrderModal({ isOpen, onClose, order = null }) { 
   const dispatch = useDispatch();
-  const [successMessage, setSuccessMessage] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+  // const [successMessage, setSuccessMessage] = useState('');
+  // const [errorMessage, setErrorMessage] = useState('');
   
   const [orderDetails, setOrderDetails] = useState({
     itemName: '',
@@ -43,23 +43,23 @@ function AddOrderModal({ isOpen, onClose, order = null }) {
 
   const handleSubmit = () => {
 
-    setSuccessMessage('');
-    setErrorMessage('');
+    // setSuccessMessage('');
+    // setErrorMessage('');
   
     if (order && order._id) { 
       dispatch(updateOrder({ id: order._id, updateData: orderDetails }))
         .unwrap()
         .then(() => {
-          setSuccessMessage('Order updated successfully.');
+          // setSuccessMessage('Order updated successfully.');
          
           dispatch(getOrders()).catch(error => {
             console.error('Failed to refresh orders:', error);
-            setErrorMessage('Failed to refresh orders. Please try again.');
+            // setErrorMessage('Failed to refresh orders. Please try again.');
           });
         })
         .catch(error => {
           console.error('Failed to update order:', error);
-          setErrorMessage('Failed to update the order. Please try again.');
+          // setErrorMessage('Failed to update the order. Please try again.');
         })
         .finally(() => {
           onClose(); 
@@ -68,23 +68,23 @@ function AddOrderModal({ isOpen, onClose, order = null }) {
       dispatch(addOrder(orderDetails))
         .unwrap()
         .then(() => {
-          setSuccessMessage('Order added successfully.');
+          // setSuccessMessage('Order added successfully.');
         
           dispatch(getOrders()).catch(error => {
             console.error('Failed to refresh orders:', error);
-            setErrorMessage('Failed to refresh orders. Please try again.');
+            // setErrorMessage('Failed to refresh orders. Please try again.');
           });
         })
         .catch(error => {
           console.error('Failed to add order:', error);
-          setErrorMessage('Failed to add the order. Please try again.');
+          // setErrorMessage('Failed to add the order. Please try again.');
         })
         .finally(() => {
           onClose(); 
         });
     } else {
       console.error('Order ID is undefined. Cannot update order.');
-      setErrorMessage('Order ID is undefined. Cannot process the order.');
+      // setErrorMessage('Order ID is undefined. Cannot process the order.');
       onClose(); 
     }
   };

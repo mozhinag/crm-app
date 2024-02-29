@@ -4,8 +4,8 @@ import { useDispatch } from 'react-redux';
 import { addUserlist, updateUserlist,getUserlist } from '../../redux/UserListSlice';
 
 function AddUserListModal({ open, handleClose, userlist }) {
-  const [successMessage, setSuccessMessage] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+  // const [successMessage, setSuccessMessage] = useState('');
+  // const [errorMessage, setErrorMessage] = useState('');
   const [userData, setUserData] = useState({
     photo: '',
     userName: '',
@@ -35,23 +35,23 @@ function AddUserListModal({ open, handleClose, userlist }) {
   const handleSave = () => {
    
 
-      setSuccessMessage('');
-      setErrorMessage('');
+      // setSuccessMessage('');
+      // setErrorMessage('');
     
       if (userlist && userlist._id) {
         dispatch(updateUserlist({ id: userlist._id, updateData: userData }))
           .unwrap()
           .then(() => {
-            setSuccessMessage('User updated successfully.');
+            // setSuccessMessage('User updated successfully.');
 
             dispatch(getUserlist()).catch(error => {
               console.error('Failed to refresh user:', error);
-              setErrorMessage('Failed to refresh user. Please try again.');
+              // setErrorMessage('Failed to refresh user. Please try again.');
             });
           })
           .catch(error => {
             console.error('Failed to update user:', error);
-            setErrorMessage('Failed to update the user. Please try again.');
+            // setErrorMessage('Failed to update the user. Please try again.');
           })
           .finally(() => {
             handleClose();
@@ -60,16 +60,16 @@ function AddUserListModal({ open, handleClose, userlist }) {
             dispatch(addUserlist(userData))
             .unwrap()
             .then(() => {
-              setSuccessMessage('User added successfully.');
+              // setSuccessMessage('User added successfully.');
 
               dispatch(getUserlist()).catch(error => {
                 console.error('Failed to refresh user:', error);
-                setErrorMessage('Failed to refresh user. Please try again.');
+                // setErrorMessage('Failed to refresh user. Please try again.');
               });
             })
             .catch(error => {
               console.error('Failed to add user:', error);
-              setErrorMessage('Failed to add the user. Please try again.');
+              // setErrorMessage('Failed to add the user. Please try again.');
             })
             .finally(() => {
               handleClose();
@@ -78,7 +78,7 @@ function AddUserListModal({ open, handleClose, userlist }) {
      
        else {
         console.error('User ID is undefined. Cannot update User.');
-        setErrorMessage('User ID is undefined. Cannot process the User.');
+        // setErrorMessage('User ID is undefined. Cannot process the User.');
         handleClose(); 
       }
     };

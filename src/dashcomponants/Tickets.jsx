@@ -39,6 +39,7 @@ function Tickets() {
           setError('Failed to refresh the Tickets list. Please try again.');
         });
       setError(''); 
+      error('');
     })
     .catch((error) => {
     

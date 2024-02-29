@@ -14,14 +14,18 @@ export const registerUser = createAsyncThunk(
         });
         let data = await response.json();
         if (!response.ok) {
-          throw new Error(data.message || 'Could not register user');
+          return rejectWithValue(data);
         }
         return data;
-      } catch (error) {
-        return rejectWithValue(error.message);
+      } 
+      catch (error) {
+        return rejectWithValue(error.response?.data?.msg || error.message || 'An error occurred');
       }
+      
     }
   );
+  
+
 
 
 // Async thunk for user login

@@ -26,7 +26,7 @@ const Register = () => {
     role: Yup.string()
       .required('Role is required'),
   });
- 
+
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -42,19 +42,22 @@ const Register = () => {
         setStatus('Registration successful. Please login.');
         navigate('/login');
       } catch (err) {
-        if (err.message && err.message.includes('User already exists')) {
-
-          setFieldError('email', 'User already exists');
+       
+        const errorMessage = err?.message || err?.msg || "An unexpected error occurred";
+    
+        if (errorMessage.includes('User already exists')) {
+          setFieldError('email', 'This email is already registered. Please login.');
         } else if (err.errors && err.errors.email) {
-
           setFieldError('email', err.errors.email);
         } else {
-
           setStatus('Registration failed. Please try again.');
         }
         setSubmitting(false);
       }
-    },
+    }
+    
+
+
   });
 
 
@@ -71,6 +74,7 @@ const Register = () => {
           value={formik.values.username}
         />
         {formik.touched.username && formik.errors.username ? <div className="error">{formik.errors.username}</div> : null}
+
       </div>
       <div className="input-box">
         <input
@@ -113,7 +117,8 @@ const Register = () => {
       <div className="btn-btn mt-2">
         <button type="submit" style={{ backgroundColor: 'rgb(32, 162, 162)', color: '#fff', padding: '5px', borderRadius: '10px' }}>Register</button>
       </div>
-      {formik.status && <div className="feedback">{formik.status}</div>}
+      {formik.status && <div className="feedback" style={{ color: 'blue' }}>{formik.status}</div>}
+
     </form>
   );
 };

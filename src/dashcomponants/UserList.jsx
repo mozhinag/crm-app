@@ -17,7 +17,7 @@ function UserList() {
         dispatch(getUserlist());
     }, [dispatch]);
 
-    const handleOpenEditModal = (user) => { // Changed from (userlist) to (user) to pass the correct user object
+    const handleOpenEditModal = (user) => {
         setSelectedUserlist(user);
         console.log(user);
         setEditModalOpen(true);
@@ -35,6 +35,7 @@ function UserList() {
               setError('Failed to refresh the Userlist list. Please try again.');
             });
           setError(''); 
+          error('');
         })
         .catch((error) => {
         
@@ -46,9 +47,9 @@ function UserList() {
     const handleCloseModal = () => setIsModalOpen(false);
     return (
         <div style={{
-            width: '70%', // Adjust width as needed
+            width: '70%',
             padding: '20px',
-            borderRadius: '10px', // Optional: Adds rounded corners
+            borderRadius: '10px', 
             marginLeft: '90px',
             alignContent: 'center',
             marginTop: '80px',
@@ -85,7 +86,7 @@ function UserList() {
                 <EditIcon style={{ color: 'blue', fontSize: '35px', border: '2px solid', padding: '5px', marginRight: '5px', cursor: 'pointer', backgroundColor: 'white', borderRadius: '5px' }} />
                 </IconButton>
                 <IconButton aria-label="delete" onClick={() => handleDeleteClick(user._id)}>
-                <EditIcon style={{ color: 'red', fontSize: '35px', border: '2px solid', padding: '5px', marginRight: '5px', cursor: 'pointer', backgroundColor: 'white', borderRadius: '5px' }} />
+                <DeleteIcon style={{ color: 'red', fontSize: '35px', border: '2px solid', padding: '5px', marginRight: '5px', cursor: 'pointer', backgroundColor: 'white', borderRadius: '5px' }} />
                 </IconButton>
               </TableCell>
             </TableRow>

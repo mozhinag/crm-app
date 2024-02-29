@@ -37,6 +37,7 @@ function Orders() {
                 setError('Failed to refresh the orders list. Please try again.');
               });
             setError(''); 
+            error('');
           })
           .catch((error) => {
           

@@ -38,6 +38,7 @@ function Task() {
             setError('Failed to refresh the Tasks list. Please try again.');
           });
         setError(''); 
+        error('');
       })
       .catch((error) => {
       

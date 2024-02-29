@@ -39,6 +39,7 @@ function Customers() {
             setError('Failed to refresh the customers list. Please try again.');
           });
         setError(''); 
+        error('');
       })
       .catch((error) => {
        

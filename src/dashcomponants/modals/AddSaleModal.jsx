@@ -5,8 +5,8 @@ import { Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button,Fo
 
 function AddSaleModal({ isOpen, onClose, sale = null }) {
     const dispatch = useDispatch();
-    const [successMessage, setSuccessMessage] = useState('');
-    const [errorMessage, setErrorMessage] = useState('');
+    // const [successMessage, setSuccessMessage] = useState('');
+    // const [errorMessage, setErrorMessage] = useState('');
   
 
     const [saleDetails, setSaleDetails] = useState({
@@ -46,22 +46,22 @@ function AddSaleModal({ isOpen, onClose, sale = null }) {
 
     const handleSubmit = () => {
 
-        setSuccessMessage('');
-        setErrorMessage('');
+        // setSuccessMessage('');
+        // setErrorMessage('');
       
         if (sale) {
             dispatch(updateSale({ id: sale._id, updateData: saleDetails }))
                 .unwrap()
                 .then(() => {
-                    setSuccessMessage('Sale updated successfully.');
+                    // setSuccessMessage('Sale updated successfully.');
                     dispatch(getSales()).catch(error => {
                         console.error('Failed to refresh sale:', error);
-                        setErrorMessage('Failed to refresh sale. Please try again.');
+                        // setErrorMessage('Failed to refresh sale. Please try again.');
                     });
                 })
                 .catch(error => {
                     console.error('Failed to update sale:', error);
-                    setErrorMessage('Failed to update the sale. Please try again.');
+                    // setErrorMessage('Failed to update the sale. Please try again.');
                 })
                 .finally(() => {
                     onClose();
@@ -71,23 +71,23 @@ function AddSaleModal({ isOpen, onClose, sale = null }) {
           dispatch(addSale(saleDetails))
             .unwrap()
             .then(() => {
-              setSuccessMessage('sale added successfully.');
+            //   setSuccessMessage('sale added successfully.');
             
               dispatch(getSales()).catch(error => {
                 console.error('Failed to refresh sale:', error);
-                setErrorMessage('Failed to refresh sale. Please try again.');
+                // setErrorMessage('Failed to refresh sale. Please try again.');
               });
             })
             .catch(error => {
               console.error('Failed to add sale:', error);
-              setErrorMessage('Failed to add the sale. Please try again.');
+            //   setErrorMessage('Failed to add the sale. Please try again.');
             })
             .finally(() => {
               onClose(); 
             });
         } else {
           console.error('sale ID is undefined. Cannot update sale.');
-          setErrorMessage('sale ID is undefined. Cannot process the sale.');
+        //   setErrorMessage('sale ID is undefined. Cannot process the sale.');
           onClose(); 
         }
       };
