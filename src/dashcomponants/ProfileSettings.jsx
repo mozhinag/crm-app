@@ -2,10 +2,10 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { createProfile, updateProfile } from '../redux/ProfileSlice'; // Adjust the import path as necessary
+import { createProfile, updateProfile } from '../redux/ProfileSlice'; 
 
 function ProfileSettings({ profileData, onProfileUpdate }) {
-    const dispatch = useDispatch(); // Use useDispatch hook to dispatch actions
+    const dispatch = useDispatch(); 
 
     const initialValues = {
       name: profileData?.name || '',
@@ -28,35 +28,35 @@ const validationSchema = Yup.object({
 const onSubmit = (values, { setSubmitting, resetForm }) => {
     console.log(values);
 
-    // Decide whether to create a new profile or update an existing one
+  
     if (profileData?._id) {
-      // Update existing profile
+     
       dispatch(updateProfile({ id: profileData._id, updateData: values }))
-          .unwrap() // Unwrap the promise to handle errors
+          .unwrap() 
           .then(() => {
               onProfileUpdate(values); 
-              console.log(onProfileUpdate); // Check what it is
+              console.log(onProfileUpdate); 
 
           })
           .catch((error) => {
               console.error("Failed to update profile:", error);
-              // Handle the error appropriately in your UI
+            
           });
   } else {
-      // Create new profile
+   
       dispatch(createProfile(values))
-          .unwrap() // Unwrap the promise to handle errors
+          .unwrap() 
           .then(() => {
-              onProfileUpdate(values); // Handle any post-creation logic, if necessary
+              onProfileUpdate(values);
           })
           .catch((error) => {
               console.error("Failed to create profile:", error);
-              // Handle the error appropriately in your UI
+             
           });
   }
 
     setSubmitting(false);
-    resetForm(); // Optionally reset the form to initial values
+    resetForm(); 
 };
 
   return (
