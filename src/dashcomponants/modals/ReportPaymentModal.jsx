@@ -1,12 +1,25 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { getSales } from '../../redux/SaleSlice'; 
 
 function ReportPaymentModal() {
-    // Directly destructure the required properties from the sales slice of the Redux state
-    const { totalSoldProducts, totalIncome, Draft, Cheque, NetBanking } = useSelector(state => state.sales);
+    const dispatch = useDispatch();
 
-    // Ensure totalIncome is treated as a number. Convert to 0 if it's not a number.
+    const { totalSoldProducts, totalIncome, Draft, Cheque, NetBanking, isLoading, error } = useSelector(state => state.sales);
+
+    useEffect(() => {
+        dispatch(getSales());
+    }, [dispatch]);
+
     const safeTotalIncome = Number(totalIncome) || 0;
+
+    if (isLoading) {
+        return <div>Loading payment data...</div>;
+    }
+
+    if (error) {
+        return <div>Error fetching payment data: {error}</div>;
+    }
 
     return (
         <div>
@@ -29,7 +42,6 @@ function ReportPaymentModal() {
                         <td>{Cheque || 0}</td>
                         <td>{NetBanking || 0}</td>
                     </tr>
-
                 </tbody>
             </table>
         </div>

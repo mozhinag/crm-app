@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import { useDispatch } from 'react-redux';
-import { addTicket, updateTicket } from '../../redux/TicketSlice';
+import { addTicket, updateTicket,getTickets } from '../../redux/TicketSlice';
 
 function AddTicketModal({ open, handleClose, ticket = null }) {
   const dispatch = useDispatch();
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const [ticketDetails, setTicketDetails] = useState({
     ticketcode: '',
     subject: '',
@@ -36,17 +38,55 @@ function AddTicketModal({ open, handleClose, ticket = null }) {
   };
 
   const handleSubmit = () => {
-    if (ticket && ticket._id) {
-      dispatch(updateTicket({ id: ticket._id, updateData: ticketDetails }));
-      alert('Upated successfully')
-    } else if(!ticket) {
-      dispatch(addTicket(ticketDetails));
-    }else{
-      console.error('ticket ID is undefined. Cannot update ticket.')
-    }
-    handleClose();
-  };
 
+    setSuccessMessage('');
+    setErrorMessage('');
+  
+    if (ticket && ticket._id) {
+      dispatch(updateTicket({ id: ticket._id, updateData: ticketDetails }))
+        .unwrap()
+        .then(() => {
+          setSuccessMessage('ticket updated successfully.');
+
+          dispatch(getTickets()).catch(error => {
+            console.error('Failed to refresh ticket:', error);
+            setErrorMessage('Failed to refresh ticket. Please try again.');
+          });
+        })
+        .catch(error => {
+          console.error('Failed to update ticket:', error);
+          setErrorMessage('Failed to update the ticket. Please try again.');
+        })
+        .finally(() => {
+          handleClose();
+        });
+      } else if (!ticket) {
+        dispatch(addTicket(ticketDetails))
+        .unwrap()
+        .then(() => {
+          setSuccessMessage('ticket added successfully.');
+
+          dispatch(getTickets()).catch(error => {
+            console.error('Failed to refresh ticket:', error);
+            setErrorMessage('Failed to refresh ticket. Please try again.');
+          });
+        })
+        .catch(error => {
+          console.error('Failed to add ticket:', error);
+          setErrorMessage('Failed to add the ticket. Please try again.');
+        })
+        .finally(() => {
+          handleClose();
+        });
+    }
+   
+     else {
+      console.error('task ID is undefined. Cannot update task.');
+      setErrorMessage('task ID is undefined. Cannot process the task.');
+      handleClose(); 
+    }
+  };
+  
   return (
     <Dialog open={open} onClose={handleClose}>
       <DialogTitle>{ticket ? 'Edit Ticket' : 'Add New Ticket'}</DialogTitle>
@@ -59,8 +99,8 @@ function AddTicketModal({ open, handleClose, ticket = null }) {
         <FormControl fullWidth margin="dense">
           <InputLabel>Description</InputLabel>
           <Select name="description" value={ticketDetails.description} onChange={handleChange} label="Description">
-            <MenuItem value="first shift">Not Working</MenuItem>
-            <MenuItem value="second shift">Defective</MenuItem>
+            <MenuItem value="Not Working">Not Working</MenuItem>
+            <MenuItem value="Defective">Defective</MenuItem>
           </Select>
         </FormControl>
         

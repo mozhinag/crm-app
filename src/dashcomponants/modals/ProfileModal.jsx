@@ -8,14 +8,12 @@ function ProfileModal({ show, onClose, onEdit }) {
   const user = useSelector((state) => state.user.userInfo);
   const profiles = useSelector((state) => state.profile.profiles);
 
-  // Fetch profiles when the component mounts if they haven't been fetched yet
   useEffect(() => {
     if (profiles.length === 0) {
       dispatch(getProfile());
     }
   }, [dispatch, profiles.length]);
 
-  // Attempt to find the user's profile again after ensuring profiles have been fetched
   const profileData = profiles.find(profile => profile.email === user?.email) || {};
 
   if (!show || !user) {

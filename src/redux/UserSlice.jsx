@@ -68,8 +68,13 @@ const userSlice = createSlice({
             state.userInfo = { username: null, email: null, role: null };
         },
         logoutAction: (state) => {
-            state.user = null; 
-          },
+            state.userInfo = { username: null, email: null, role: null };
+            state.isLoading = false;
+            state.isError = false;
+            state.isSuccess = false;
+            state.message = '';
+        },
+        
     },
     extraReducers: (builder) => {
         builder

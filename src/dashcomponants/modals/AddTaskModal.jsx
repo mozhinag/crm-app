@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { addTask, updateTask } from '../../redux/TaskSlice';
+import { addTask, updateTask ,getTasks} from '../../redux/TaskSlice';
 import { Dialog, DialogTitle, DialogContent, TextField, DialogActions, FormControl, InputLabel, Button, Select, MenuItem } from '@mui/material';
 
 function AddTaskModal({ isOpen, onClose, task = null }) {
     const dispatch = useDispatch();
-
+    const [successMessage, setSuccessMessage] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
 
 
     const [taskDetails, setTaskDetails] = useState({
@@ -40,21 +41,53 @@ function AddTaskModal({ isOpen, onClose, task = null }) {
     };
 
     const handleSubmit = () => {
-        if (task&& task._id) {
 
-            dispatch(updateTask({ id: task._id, updateData: taskDetails }));
-            console.log(task._id)
-            alert('Updated successfully')
-        } else if(!task){
-
-            dispatch(addTask(taskDetails));
-            console.log(taskDetails)
-        }else{
-            console.error('task ID is undefined. Cannot update task.')
+        setSuccessMessage('');
+        setErrorMessage('');
+      
+        if (task && task._id) { 
+          dispatch(updateTask({ id: task._id, updateData: taskDetails }))
+            .unwrap()
+            .then(() => {
+              setSuccessMessage('task updated successfully.');
+             
+              dispatch(getTasks()).catch(error => {
+                console.error('Failed to refresh task:', error);
+                setErrorMessage('Failed to refresh task. Please try again.');
+              });
+            })
+            .catch(error => {
+              console.error('Failed to update task:', error);
+              setErrorMessage('Failed to update the task. Please try again.');
+            })
+            .finally(() => {
+              onClose(); 
+            });
+        } else if (!task) { 
+          dispatch(addTask(taskDetails))
+            .unwrap()
+            .then(() => {
+              setSuccessMessage('task added successfully.');
+            
+              dispatch(getTasks()).catch(error => {
+                console.error('Failed to refresh task:', error);
+                setErrorMessage('Failed to refresh task. Please try again.');
+              });
+            })
+            .catch(error => {
+              console.error('Failed to add task:', error);
+              setErrorMessage('Failed to add the task. Please try again.');
+            })
+            .finally(() => {
+              onClose(); 
+            });
+        } else {
+          console.error('task ID is undefined. Cannot update task.');
+          setErrorMessage('task ID is undefined. Cannot process the task.');
+          onClose(); 
         }
-        onClose();
-    };
-
+      };
+      
     return (
         <Dialog open={isOpen} onClose={onClose}>
             <DialogTitle>{task ? 'Edit Task' : 'Add New Task'}</DialogTitle>

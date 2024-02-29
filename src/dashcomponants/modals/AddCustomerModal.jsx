@@ -1,10 +1,10 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { createCustomer, updateCustomer } from '../../redux/CustomerSlice';
+import { createCustomer, updateCustomer,getCustomers } from '../../redux/CustomerSlice';
 import { Modal, Box, Typography, Button, TextField, FormControl, RadioGroup, FormControlLabel, Radio, FormLabel, MenuItem } from '@mui/material';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
-
+import { useState } from 'react';
 
 
 const modalStyle = {
@@ -12,16 +12,16 @@ const modalStyle = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 'auto', // Adjusted to 'auto' for potentially better layout
+    width: 'auto', 
     bgcolor: 'background.paper',
     boxShadow: 24,
     p: 4,
     display: 'flex',
     flexDirection: 'column',
     gap: 2,
-    maxWidth: '90%', // Ensure the modal does not exceed the screen width
-    maxHeight: '90%', // Ensure the modal does not exceed the screen height
-    overflowY: 'auto', // Enable scrolling for overflow content
+    maxWidth: '90%', 
+    maxHeight: '90%', 
+    overflowY: 'auto', 
 };
 
 // Validation Schema
@@ -37,6 +37,8 @@ const CustomerSchema = Yup.object().shape({
 });
 
 function AddCustomerModal({ open, handleClose, customer }) {
+    const [error, setError] = useState('');
+
     const dispatch = useDispatch();
     const isEdit = Boolean(customer);
     const initialValues = {
@@ -48,7 +50,7 @@ function AddCustomerModal({ open, handleClose, customer }) {
         customerType: '',
         sex: '',
         status: '',
-        ...customer // Spread the customer details if editing
+        ...customer 
     };
     return (
         <Modal
@@ -65,21 +67,25 @@ function AddCustomerModal({ open, handleClose, customer }) {
                     initialValues={initialValues}
                     validationSchema={CustomerSchema}
                     onSubmit={(values, { setSubmitting, resetForm }) => {
-                        if (isEdit) {
-
-                            dispatch(updateCustomer({ id: customer._id, updateData: values }));
-
-                            console.log(customer._id);
-                            alert('Upated successfully')
-                            console.log(values);
-                        } else {
-
-                            dispatch(createCustomer(values));
-                        }
-                        setSubmitting(false);
-                        resetForm();
-                        handleClose();
-                    }}
+                        const action = isEdit ? updateCustomer({ id: customer._id, updateData: values }) : createCustomer(values);
+                        dispatch(action)
+                          .then(() => {
+                            dispatch(getCustomers()); 
+                            handleClose(); 
+                            setError(''); 
+                          })
+                          .catch((error) => {
+                            console.error('Operation failed:', error);
+                            setError('Operation failed. Please try again.'); 
+                          })
+                          .finally(() => {
+                            setSubmitting(false); 
+                            if (!isEdit) {
+                              resetForm(); 
+                            }
+                          });
+                      }}
+                      
 
                 >
                     {({ errors, touched, handleSubmit, isSubmitting, getFieldProps, resetForm }) => (

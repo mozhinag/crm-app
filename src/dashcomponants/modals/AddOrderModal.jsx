@@ -1,12 +1,14 @@
 // AddOrderModal.js
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { addOrder, updateOrder } from '../../redux/OrderSlice';
+import { addOrder, updateOrder,getOrders } from '../../redux/OrderSlice';
 import { Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button,MenuItem,InputLabel,Select,FormControl } from '@mui/material';
 
-function AddOrderModal({ isOpen, onClose, order = null }) { // Default order to null for new orders
+function AddOrderModal({ isOpen, onClose, order = null }) { 
   const dispatch = useDispatch();
-  // Initialize form with empty values or existing order values
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  
   const [orderDetails, setOrderDetails] = useState({
     itemName: '',
     itemCode: '',
@@ -16,7 +18,7 @@ function AddOrderModal({ isOpen, onClose, order = null }) { // Default order to 
     status: '',
   });
 
-  // Effect to populate form when editing an order
+  
   useEffect(() => {
     if (order) {
       setOrderDetails(order);
@@ -40,17 +42,53 @@ function AddOrderModal({ isOpen, onClose, order = null }) { // Default order to 
   };
 
   const handleSubmit = () => {
-    if (order && order._id) {
-      dispatch(updateOrder({ id: order._id, updateData: orderDetails }));
-      alert('Upated successfully')
-    } else if (!order) {
-      dispatch(addOrder(orderDetails));
+
+    setSuccessMessage('');
+    setErrorMessage('');
+  
+    if (order && order._id) { 
+      dispatch(updateOrder({ id: order._id, updateData: orderDetails }))
+        .unwrap()
+        .then(() => {
+          setSuccessMessage('Order updated successfully.');
+         
+          dispatch(getOrders()).catch(error => {
+            console.error('Failed to refresh orders:', error);
+            setErrorMessage('Failed to refresh orders. Please try again.');
+          });
+        })
+        .catch(error => {
+          console.error('Failed to update order:', error);
+          setErrorMessage('Failed to update the order. Please try again.');
+        })
+        .finally(() => {
+          onClose(); 
+        });
+    } else if (!order) { 
+      dispatch(addOrder(orderDetails))
+        .unwrap()
+        .then(() => {
+          setSuccessMessage('Order added successfully.');
+        
+          dispatch(getOrders()).catch(error => {
+            console.error('Failed to refresh orders:', error);
+            setErrorMessage('Failed to refresh orders. Please try again.');
+          });
+        })
+        .catch(error => {
+          console.error('Failed to add order:', error);
+          setErrorMessage('Failed to add the order. Please try again.');
+        })
+        .finally(() => {
+          onClose(); 
+        });
     } else {
       console.error('Order ID is undefined. Cannot update order.');
+      setErrorMessage('Order ID is undefined. Cannot process the order.');
+      onClose(); 
     }
-    
-    onClose();
   };
+  
   
 
   return (

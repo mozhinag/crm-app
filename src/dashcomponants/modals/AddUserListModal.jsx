@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 import { useDispatch } from 'react-redux';
-import { addUserlist, updateUserlist } from '../../redux/UserListSlice';
+import { addUserlist, updateUserlist,getUserlist } from '../../redux/UserListSlice';
 
 function AddUserListModal({ open, handleClose, userlist }) {
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const [userData, setUserData] = useState({
     photo: '',
     userName: '',
@@ -31,14 +33,56 @@ function AddUserListModal({ open, handleClose, userlist }) {
   };
 
   const handleSave = () => {
-    if (userlist && userlist._id) {
-      dispatch(updateUserlist({id:userlist._id,updateData:userData }));
-    } else {
-      dispatch(addUserlist(userData));
-    }
-    handleClose();
-  };
+   
 
+      setSuccessMessage('');
+      setErrorMessage('');
+    
+      if (userlist && userlist._id) {
+        dispatch(updateUserlist({ id: userlist._id, updateData: userData }))
+          .unwrap()
+          .then(() => {
+            setSuccessMessage('User updated successfully.');
+
+            dispatch(getUserlist()).catch(error => {
+              console.error('Failed to refresh user:', error);
+              setErrorMessage('Failed to refresh user. Please try again.');
+            });
+          })
+          .catch(error => {
+            console.error('Failed to update user:', error);
+            setErrorMessage('Failed to update the user. Please try again.');
+          })
+          .finally(() => {
+            handleClose();
+          })
+         } else if (!userlist) {
+            dispatch(addUserlist(userData))
+            .unwrap()
+            .then(() => {
+              setSuccessMessage('User added successfully.');
+
+              dispatch(getUserlist()).catch(error => {
+                console.error('Failed to refresh user:', error);
+                setErrorMessage('Failed to refresh user. Please try again.');
+              });
+            })
+            .catch(error => {
+              console.error('Failed to add user:', error);
+              setErrorMessage('Failed to add the user. Please try again.');
+            })
+            .finally(() => {
+              handleClose();
+            });
+          }
+     
+       else {
+        console.error('User ID is undefined. Cannot update User.');
+        setErrorMessage('User ID is undefined. Cannot process the User.');
+        handleClose(); 
+      }
+    };
+    
   return (
     <Dialog open={open} onClose={handleClose}>
       <DialogTitle>{userlist ? 'Edit User' : 'Add User'}</DialogTitle>

@@ -9,7 +9,8 @@ import AddOrderModal from './modals/AddOrderModal';
 function Orders() {
     const dispatch = useDispatch();
     const orders = useSelector((state) => state.orders.list);
-   
+    const [error, setError] = useState('');
+
     
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingOrder, setEditingOrder] = useState(null);
@@ -23,8 +24,27 @@ function Orders() {
         setIsModalOpen(true);
     };
     const handleDeleteClick = (_id) => {
-        dispatch(deleteOrder(_id));
-    }
+       
+      
+        dispatch(deleteOrder(_id))
+          .unwrap() 
+          .then(() => {
+           
+            dispatch(getOrders())
+              .catch((error) => {
+              
+                console.error('Failed to refresh orders list:', error);
+                setError('Failed to refresh the orders list. Please try again.');
+              });
+            setError(''); 
+          })
+          .catch((error) => {
+          
+            console.error('Failed to delete order:', error);
+            setError('Failed to delete the order. Please try again.');
+          });
+      };
+      
     const handleCloseModal = () => {
         setIsModalOpen(false);
         setEditingOrder(null);
@@ -32,9 +52,9 @@ function Orders() {
 
     return (
         <div style={{
-            width: '90%', // Adjust width as needed
+            width: '90%', 
             padding: '20px',
-            borderRadius: '10px', // Optional: Adds rounded corners
+            borderRadius: '10px', 
             marginLeft: '90px',
             alignContent: 'center',
             marginTop: '60px',

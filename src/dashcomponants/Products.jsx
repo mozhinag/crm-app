@@ -8,9 +8,9 @@ import AddProductModal from './modals/AddProductModal'; // Ensure the file name 
 
 function Products() {
     const dispatch = useDispatch();
-    // Assuming renaming 'prod' to 'products' in your slice for clarity
+    
     const products = useSelector((state) => state.products.list);
-   
+   const [error,setError]=useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingProduct, setEditingProduct] = useState(null);
 
@@ -24,9 +24,28 @@ function Products() {
     };
 
     const handleDeleteClick = (_id) => {
-        dispatch(deleteProduct(_id));
-        alert('Deleted successfully')
-    };
+       
+      
+        dispatch(deleteProduct(_id))
+          .unwrap() 
+          .then(() => {
+           
+            dispatch(getProducts())
+              .catch((error) => {
+              
+                console.error('Failed to refresh Products list:', error);
+                setError('Failed to refresh theProducts list. Please try again.');
+              });
+            setError(''); 
+          })
+          .catch((error) => {
+          
+            console.error('Failed to delete Product:', error);
+            setError('Failed to delete the Product. Please try again.');
+          });
+      };
+      
+      
 
     const handleCloseModal = () => {
         setIsModalOpen(false);

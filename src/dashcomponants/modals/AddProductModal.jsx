@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { addProduct, updateProduct } from '../../redux/ProductSlice';
-import { Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button,MenuItem,FormControl,Select,InputLabel } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button, MenuItem, FormControl, Select, InputLabel } from '@mui/material';
 
-function AddproductModal({ isOpen, onClose, product = null }) { 
+function AddproductModal({ isOpen, onClose, product = null }) {
   const dispatch = useDispatch();
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+
   const [productDetails, setproductDetails] = useState({
 
     code: '',
@@ -17,7 +20,7 @@ function AddproductModal({ isOpen, onClose, product = null }) {
     status: '',
   });
 
-  // Effect to populate form when editing an order
+
   useEffect(() => {
     if (product) {
       setproductDetails({
@@ -42,7 +45,7 @@ function AddproductModal({ isOpen, onClose, product = null }) {
         status: '',
       });
     }
-  }, [product]); 
+  }, [product]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -52,14 +55,33 @@ function AddproductModal({ isOpen, onClose, product = null }) {
   };
 
   const handleSubmit = () => {
-    if (product && product._id) {
-      dispatch(updateProduct({ id: product._id, updateData: productDetails }));
-    } else {
-      dispatch(addProduct(productDetails));
+ 
+    setSuccessMessage('');
+    setErrorMessage('');
+  
+    let dispatchOperation;
+    if (product && product._id) { 
+      dispatchOperation = dispatch(updateProduct({ id: product._id, updateData: productDetails }));
+    } else { 
+      dispatchOperation = dispatch(addProduct(productDetails));
     }
-    onClose();
+  
+    dispatchOperation
+      .unwrap() 
+      .then(() => {
+        setSuccessMessage(product && product._id ? 'Product updated successfully.' : 'Product added successfully.');
+        
+      })
+      .catch(error => {
+        console.error('Operation failed:', error);
+        setErrorMessage('Operation failed. Please try again.');
+      })
+      .finally(() => {
+        onClose();
+      });
   };
   
+
 
   return (
     <Dialog open={isOpen} onClose={onClose}>
@@ -67,7 +89,7 @@ function AddproductModal({ isOpen, onClose, product = null }) {
       <DialogContent>
         <TextField margin="dense" name="code" label="Item Code" fullWidth value={productDetails.code} onChange={handleChange} />
         <TextField margin="dense" name="name" label="Item Name" fullWidth value={productDetails.name} onChange={handleChange} />
-        <TextField margin="dense" name="category" label="Item Category"  fullWidth value={productDetails.category} onChange={handleChange} />
+        <TextField margin="dense" name="category" label="Item Category" fullWidth value={productDetails.category} onChange={handleChange} />
         <TextField margin="dense" name="quantity" label="Quantity" fullWidth value={productDetails.quantity} onChange={handleChange} />
         <TextField margin="dense" name="description" label="Description" fullWidth value={productDetails.description} onChange={handleChange} />
         <TextField margin="dense" name="unitPrice" label=" Unit Price" fullWidth value={productDetails.unitPrice} onChange={handleChange} />

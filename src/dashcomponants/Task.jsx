@@ -8,7 +8,7 @@ import AddTaskModal from './modals/AddTaskModal';
 
 function Task() {
   const dispatch = useDispatch();
- 
+  const [error,setError]=useState('');
   const tasks = useSelector((state) => state.tasks.list);
   console.log(tasks);
   console.log('Type of tasks:', typeof tasks);
@@ -24,9 +24,27 @@ function Task() {
     setEditingTask(task); 
     setIsModalOpen(true); 
   };
-const handleDeleteClick =(_id)=>{
-    dispatch(deleteTask(_id));
-}
+  const handleDeleteClick = (_id) => {
+       
+      
+    dispatch(deleteTask(_id))
+      .unwrap() 
+      .then(() => {
+       
+        dispatch(getTasks())
+          .catch((error) => {
+          
+            console.error('Failed to refresh Tasks list:', error);
+            setError('Failed to refresh the Tasks list. Please try again.');
+          });
+        setError(''); 
+      })
+      .catch((error) => {
+      
+        console.error('Failed to delete Tasks:', error);
+        setError('Failed to delete the Tasks. Please try again.');
+      });
+  };
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setEditingTask(null); 

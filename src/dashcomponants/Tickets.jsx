@@ -17,7 +17,7 @@ function Tickets() {
     const [selectedTicket, setSelectedTicket] = useState(null);
     const dispatch = useDispatch();
     const tickets = useSelector((state) => state.ticket.tickets);
-
+    const [error,setError]=useState('');
     useEffect(() => {
         dispatch(getTickets());
     }, [dispatch]);
@@ -27,10 +27,25 @@ function Tickets() {
         console.log(ticket);
         setEditModalOpen(true);
     };
-
-    const handleDeleteCustomer = (_id) => {
-        dispatch(deleteTickets(_id));
-    };
+    const handleDeleteClick = (_id) => {
+    dispatch(deleteTickets(_id))
+    .unwrap() 
+    .then(() => {
+     
+      dispatch(getTickets())
+        .catch((error) => {
+        
+          console.error('Failed to refresh Tickets list:', error);
+          setError('Failed to refresh the Tickets list. Please try again.');
+        });
+      setError(''); 
+    })
+    .catch((error) => {
+    
+      console.error('Failed to delete Tickets:', error);
+      setError('Failed to delete the Tickets. Please try again.');
+    });
+};
     const handleOpenModal = () => setIsModalOpen(true);
     const handleCloseModal = () => setIsModalOpen(false);
   
@@ -40,9 +55,9 @@ function Tickets() {
 
 
             <div style={{
-            width: '70%', // Adjust width as needed
+            width: '70%', 
             padding: '20px',
-            borderRadius: '10px', // Optional: Adds rounded corners
+            borderRadius: '10px', 
             marginLeft: '90px',
             alignContent: 'center',
             marginTop: '80px',
@@ -83,7 +98,7 @@ function Tickets() {
                                             <IconButton aria-label="edit" onClick={() => handleOpenEditModal(ticket)}>
                                                 <EditIcon style={{ color: 'blue', fontSize: '35px', border: '2px solid', padding: '5px', marginRight: '5px', cursor: 'pointer', backgroundColor: 'white', borderRadius: '5px' }} />
                                             </IconButton>
-                                            <IconButton aria-label="delete" onClick={() => handleDeleteCustomer(ticket._id)}>
+                                            <IconButton aria-label="delete" onClick={() => handleDeleteClick(ticket._id)}>
                                                 <DeleteIcon style={{ color: 'red', fontSize: '35px', border: '2px solid', padding: '5px', marginRight: '5px', cursor: 'pointer', backgroundColor: 'white', borderRadius: '5px' }} />
                                             </IconButton>
                                         </TableCell>

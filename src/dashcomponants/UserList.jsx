@@ -12,7 +12,7 @@ function UserList() {
     const [selectedUserlist, setSelectedUserlist] = useState(null);
     const dispatch = useDispatch();
     const userlist = useSelector((state) => state.userlist.list);
-
+    const [error,setError]=useState('');
     useEffect(() => {
         dispatch(getUserlist());
     }, [dispatch]);
@@ -23,8 +23,24 @@ function UserList() {
         setEditModalOpen(true);
     };
     
-    const handleDeleteCustomer = (_id) => {
-        dispatch(deleteUserlist(_id));
+    const handleDeleteClick = (_id) => {
+        dispatch(deleteUserlist(_id))
+        .unwrap() 
+        .then(() => {
+         
+          dispatch(getUserlist())
+            .catch((error) => {
+            
+              console.error('Failed to refresh Userlist list:', error);
+              setError('Failed to refresh the Userlist list. Please try again.');
+            });
+          setError(''); 
+        })
+        .catch((error) => {
+        
+          console.error('Failed to delete Userlist:', error);
+          setError('Failed to delete the Userlist. Please try again.');
+        });
     };
     const handleOpenModal = () => setIsModalOpen(true);
     const handleCloseModal = () => setIsModalOpen(false);
@@ -66,10 +82,10 @@ function UserList() {
               <TableCell>{user.status}</TableCell>
               <TableCell>
                 <IconButton aria-label="edit" onClick={() => handleOpenEditModal(user)}>
-                  <EditIcon style={{ color: 'blue', fontSize: '1.1rem', border: '2px solid', padding: '5px', marginRight: '5px', cursor: 'pointer', backgroundColor: 'white', borderRadius: '5px' }} />
+                <EditIcon style={{ color: 'blue', fontSize: '35px', border: '2px solid', padding: '5px', marginRight: '5px', cursor: 'pointer', backgroundColor: 'white', borderRadius: '5px' }} />
                 </IconButton>
-                <IconButton aria-label="delete" onClick={() => handleDeleteCustomer(user._id)}>
-                  <DeleteIcon style={{ color: 'red', fontSize: '1.1rem', border: '2px solid', padding: '5px', marginRight: '5px', cursor: 'pointer', backgroundColor: 'white', borderRadius: '5px' }} />
+                <IconButton aria-label="delete" onClick={() => handleDeleteClick(user._id)}>
+                <EditIcon style={{ color: 'red', fontSize: '35px', border: '2px solid', padding: '5px', marginRight: '5px', cursor: 'pointer', backgroundColor: 'white', borderRadius: '5px' }} />
                 </IconButton>
               </TableCell>
             </TableRow>

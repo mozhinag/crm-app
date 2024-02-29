@@ -1,21 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteCustomer, getCustomers } from '../redux/CustomerSlice'; // Update the import path as necessary
+import { deleteCustomer, getCustomers } from '../redux/CustomerSlice'; 
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Button } from '@mui/material';
 import { Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import { FaPlus } from "react-icons/fa";
 import AddCustomerModal from './modals/AddCustomerModal';
 
 
-// Import EditCustomerModal if you have one
+
 
 function Customers() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  // Assume there's state to control edit modal visibility
+  
   const [editModalOpen, setEditModalOpen] = useState(false);
-  const [selectedCustomer, setSelectedCustomer] = useState(null); // To track which customer is being edited
+  const [selectedCustomer, setSelectedCustomer] = useState(null); 
   const dispatch = useDispatch();
   const customers = useSelector((state) => state.customer.customers);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     dispatch(getCustomers());
@@ -28,8 +29,24 @@ function Customers() {
   };
 
   const handleDeleteCustomer = (_id) => {
-    dispatch(deleteCustomer(_id));
+    dispatch(deleteCustomer(_id))
+      .then(() => {
+       
+        dispatch(getCustomers())
+          .catch((error) => {
+        
+            console.error('Failed to refresh customers list:', error);
+            setError('Failed to refresh the customers list. Please try again.');
+          });
+        setError(''); 
+      })
+      .catch((error) => {
+       
+        console.error('Failed to delete customer:', error);
+        setError('Failed to delete the customer. Please try again.');
+      });
   };
+  
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
 

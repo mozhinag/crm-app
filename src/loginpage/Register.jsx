@@ -26,7 +26,7 @@ const Register = () => {
     role: Yup.string()
       .required('Role is required'),
   });
-
+ 
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -39,6 +39,7 @@ const Register = () => {
       setSubmitting(true);
       try {
         await dispatch(registerUser(values)).unwrap();
+        setStatus('Registration successful. Please login.');
         navigate('/login');
       } catch (err) {
         if (err.message && err.message.includes('User already exists')) {

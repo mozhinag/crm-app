@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { addSale, updateSale } from '../../redux/SaleSlice';
+import { addSale, updateSale,getSales } from '../../redux/SaleSlice';
 import { Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button,FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 
 function AddSaleModal({ isOpen, onClose, sale = null }) {
     const dispatch = useDispatch();
+    const [successMessage, setSuccessMessage] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
+  
 
     const [saleDetails, setSaleDetails] = useState({
 
@@ -42,21 +45,56 @@ function AddSaleModal({ isOpen, onClose, sale = null }) {
     };
 
     const handleSubmit = () => {
-        if (sale && sale._id) {
 
-            dispatch(updateSale({ id: sale._id, updateData: saleDetails }));
-            alert('Upated successfully')
-            console.log(sale._id)
-        } else if(!sale){
-
-            dispatch(addSale(saleDetails));
-            console.log(saleDetails)
-        } else{
-            console.error('sale ID is undefined. Cannot update sale.')
+        setSuccessMessage('');
+        setErrorMessage('');
+      
+        if (sale) {
+            dispatch(updateSale({ id: sale._id, updateData: saleDetails }))
+                .unwrap()
+                .then(() => {
+                    setSuccessMessage('Sale updated successfully.');
+                    dispatch(getSales()).catch(error => {
+                        console.error('Failed to refresh sale:', error);
+                        setErrorMessage('Failed to refresh sale. Please try again.');
+                    });
+                })
+                .catch(error => {
+                    console.error('Failed to update sale:', error);
+                    setErrorMessage('Failed to update the sale. Please try again.');
+                })
+                .finally(() => {
+                    onClose();
+                });
+       
+        } else if (!sale) { 
+          dispatch(addSale(saleDetails))
+            .unwrap()
+            .then(() => {
+              setSuccessMessage('sale added successfully.');
+            
+              dispatch(getSales()).catch(error => {
+                console.error('Failed to refresh sale:', error);
+                setErrorMessage('Failed to refresh sale. Please try again.');
+              });
+            })
+            .catch(error => {
+              console.error('Failed to add sale:', error);
+              setErrorMessage('Failed to add the sale. Please try again.');
+            })
+            .finally(() => {
+              onClose(); 
+            });
+        } else {
+          console.error('sale ID is undefined. Cannot update sale.');
+          setErrorMessage('sale ID is undefined. Cannot process the sale.');
+          onClose(); 
         }
-        onClose();
-    };
-
+      };
+      
+    
+      
+    
     return (
         <Dialog open={isOpen} onClose={onClose}>
             <DialogTitle>{sale ? 'Edit Sale' : 'Add New Sale'}</DialogTitle>

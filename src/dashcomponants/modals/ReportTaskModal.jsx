@@ -1,8 +1,22 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { getTasks } from '../../redux/TaskSlice'; 
 
 function ReportTaskModal() {
-  const { totalTasks, assignedTasks, unassignedTasks } = useSelector(state => state.tasks);
+  const dispatch = useDispatch();
+  const { totalTasks, assignedTasks, unassignedTasks, isLoading, error } = useSelector(state => state.tasks);
+
+  useEffect(() => {
+    dispatch(getTasks());
+  }, [dispatch]);
+
+  if (isLoading) {
+    return <div>Loading tasks data...</div>;
+  }
+
+  if (error) {
+    return <div>Error fetching tasks data: {error}</div>;
+  }
 
   return (
     <div>

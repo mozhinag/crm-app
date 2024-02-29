@@ -15,12 +15,10 @@ function AdminSideBar() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const logoutHandler = () => {
-    localStorage.removeItem("token");
    
-    
-  
     dispatch(logoutAction());
-    
+    localStorage.removeItem("token");
+
     navigate('/login');
   };
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);

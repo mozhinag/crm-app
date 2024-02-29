@@ -1,10 +1,22 @@
-// CustomerModal.js
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { getCustomers } from '../../redux/CustomerSlice'; 
 
 function ReportCustomerModal() {
-  // Access details from Redux store
-  const { details } = useSelector((state) => state.customer);
+  const dispatch = useDispatch();
+  const { details, isLoading, isError, message } = useSelector((state) => state.customer);
+
+  useEffect(() => {
+    dispatch(getCustomers());
+  }, [dispatch]);
+
+  if (isLoading) {
+    return <div>Loading customer data...</div>;
+  }
+
+  if (isError) {
+    return <div>Error fetching customer data: {message}</div>;
+  }
 
   return (
     <div>

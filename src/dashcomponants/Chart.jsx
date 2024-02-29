@@ -1,23 +1,44 @@
-import React from 'react';
+
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell, BarChart, Bar } from 'recharts';
-import { useSelector } from 'react-redux';
+
+import { getCustomers } from '../redux/CustomerSlice';
+import { getSales } from '../redux/SaleSlice';
+import { getTasks } from '../redux/TaskSlice';
+import { getOrders } from '../redux/OrderSlice';
 
 
 const barData = [
   { name: 'Jan', Sales: 4000, Orders: 2400, Tasks: 3350 },
   { name: 'Feb', Sales: 3000, Orders: 1398, Tasks: 4400 },
+  { name: 'Mar', Sales: 2000, Orders: 9800, Tasks: 4400 },
+  { name: 'Apr', Sales: 2780, Orders: 3908, Tasks: 4800 },
+  { name: 'May', Sales: 1890, Orders: 4800, Tasks: 3800 },
   // More data can be added as needed
 ];
 const monthlyRevenueData = [
   { month: 'Jan', Revenue: 4000 },
   { month: 'Feb', Revenue: 3000 },
+  { month: 'Mar', Revenue: 2000 },
+  { month: 'Apr', Revenue: 2780 },
+  { month: 'May', Revenue: 1890 },
   // Add more data as needed
 ];
 
 function Chart() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getCustomers());
+    dispatch(getSales());
+    dispatch(getTasks());
+    dispatch(getOrders());
+  }, [dispatch]);
+
 
   const { details } = useSelector((state) => state.customer);
   const { totalTasks } = useSelector(state => state.tasks);

@@ -10,7 +10,7 @@ import AddSaleModal from './modals/AddSaleModal';
 function Sales() {
   const dispatch = useDispatch();
   const sales = useSelector((state) => state.sales.list);
-
+  const [error,setError]=useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingSale, setEditingSale] = useState(null); 
 
@@ -22,9 +22,27 @@ function Sales() {
     setEditingSale(sale); 
     setIsModalOpen(true); 
   };
-const handleDeleteClick =(_id)=>{
-    dispatch(deleteSale(_id));
-}
+  const handleDeleteClick = (_id) => {
+       
+      
+    dispatch(deleteSale(_id))
+      .unwrap() 
+      .then(() => {
+       
+        dispatch(getSales())
+          .catch((error) => {
+          
+            console.error('Failed to refresh Sales list:', error);
+            setError('Failed to refresh the Sales list. Please try again.');
+          });
+        setError(''); 
+      })
+      .catch((error) => {
+      
+        console.error('Failed to delete Sales:', error);
+        setError('Failed to delete the Sales. Please try again.');
+      });
+  };
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setEditingSale(null); 
