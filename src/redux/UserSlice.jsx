@@ -67,6 +67,9 @@ const userSlice = createSlice({
             state.message = '';
             state.userInfo = { username: null, email: null, role: null };
         },
+        logoutAction: (state) => {
+            state.user = null; 
+          },
     },
     extraReducers: (builder) => {
         builder
@@ -99,5 +102,5 @@ const userSlice = createSlice({
 },
 });
 
-export const { reset } = userSlice.actions;
+export const { reset, logoutAction } = userSlice.actions;
 export default userSlice.reducer;

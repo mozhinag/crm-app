@@ -1,17 +1,23 @@
 import React from 'react';
 import { FaHouseChimney, FaUsers, FaFirstOrder } from "react-icons/fa6";
 import { FaProductHunt, FaTicketAlt } from "react-icons/fa";
+import { useDispatch } from 'react-redux';
 
 import { LuLogOut } from "react-icons/lu";
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-
+import { logoutAction } from '../../redux/UserSlice';
 
 function CustSideBar() {
-
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const logoutHandler = () => {
-    localStorage.removeItem("token")
+    localStorage.removeItem("token");
+   
+    
+  
+    dispatch(logoutAction());
+    
     navigate('/login');
   };
 
@@ -19,10 +25,10 @@ function CustSideBar() {
     textDecoration: 'none',
     color: 'black',
     textTransform: 'capitalize',
-    marginTop: '20px', // Adjust the top margin as per your design
+    marginTop: '20px', 
     display: 'flex',
     alignItems: 'center',
-    gap: '12px' // This creates space between the icon and the text
+    gap: '12px' 
   };
 
 

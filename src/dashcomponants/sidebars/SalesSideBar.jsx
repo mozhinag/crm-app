@@ -1,19 +1,24 @@
 import React from 'react';
 import { FaHouseChimney, FaUsers, FaFirstOrder, } from "react-icons/fa6";
 import { FaProductHunt, FaCartArrowDown } from "react-icons/fa";
-
+import { useDispatch } from 'react-redux';
 import { LuLogOut } from "react-icons/lu";
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-
+import { logoutAction } from '../../redux/UserSlice';
 
 function SalesSideBar() {
-    const navigate = useNavigate();
-    const logoutHandler = () => {
-        localStorage.removeItem("token")
-        navigate('/login');
-    };
-
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const logoutHandler = () => {
+    localStorage.removeItem("token");
+   
+    
+  
+    dispatch(logoutAction());
+    
+    navigate('/login');
+  };
     const linkStyle = {
         textDecoration: 'none',
         color: 'black',

@@ -8,12 +8,19 @@ import { LuLogOut } from "react-icons/lu";
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import { useDispatch } from 'react-redux';
+import { logoutAction } from '../../redux/UserSlice';
 
 function AdminSideBar() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const logoutHandler = () => {
-    localStorage.removeItem("token")
+    localStorage.removeItem("token");
+   
+    
+  
+    dispatch(logoutAction());
+    
     navigate('/login');
   };
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -22,10 +29,10 @@ function AdminSideBar() {
     textDecoration: 'none',
     color: 'black',
     textTransform: 'capitalize',
-    marginTop: '20px', // Adjust the top margin as per your design
+    marginTop: '20px', 
     display: 'flex',
     alignItems: 'center',
-    gap: '12px' // This creates space between the icon and the text
+    gap: '12px' 
   };
 
   const toggleSettings = () => setIsSettingsOpen(!isSettingsOpen);
