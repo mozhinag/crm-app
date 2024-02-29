@@ -4,24 +4,24 @@ import axios from 'axios';
 export const registerUser = createAsyncThunk(
     'user/register',
     async (userData, { rejectWithValue }) => {
-        try {
-            const response = await axios.post('https://server-crm-yowd.onrender.com/auth/register', userData);
-            return { ...response.data, password: undefined };
-        } catch (error) {
-            if (!error.response) {
-           
-                return rejectWithValue('A network or server error occurred.');
-            }
-         
-            if (error.response.data.message === 'User already exists') {
-                return rejectWithValue({ message: 'User already exists' });
-            }
-           
-            return rejectWithValue(error.response.data);
+      try {
+        const response = await fetch('https://server-crm-yowd.onrender.com/auth/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(userData),
+        });
+        let data = await response.json();
+        if (!response.ok) {
+          throw new Error(data.message || 'Could not register user');
         }
+        return data;
+      } catch (error) {
+        return rejectWithValue(error.message);
+      }
     }
-);
-
+  );
 
 
 // Async thunk for user login
