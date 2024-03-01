@@ -37,7 +37,7 @@ const CustomerSchema = Yup.object().shape({
 });
 
 function AddCustomerModal({ open, handleClose, customer }) {
-    const [error, setError] = useState('');
+    // const [error, setError] = useState('');
 
     const dispatch = useDispatch();
     const isEdit = Boolean(customer);
@@ -72,12 +72,12 @@ function AddCustomerModal({ open, handleClose, customer }) {
                           .then(() => {
                             dispatch(getCustomers()); 
                             handleClose(); 
-                            setError(''); 
-                            error('');
+                            // setError(''); 
+                            // error('');
                           })
                           .catch((error) => {
                             console.error('Operation failed:', error);
-                            setError('Operation failed. Please try again.'); 
+                            // setError('Operation failed. Please try again.'); 
                           })
                           .finally(() => {
                             setSubmitting(false); 
