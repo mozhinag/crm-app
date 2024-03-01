@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Button } from '@mui/material';
 import { getProfile } from '../../redux/ProfileSlice';
 
-function ProfileModal({ show, onClose, onEdit }) {
+function ProfileModal({ show, onClose }) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.userInfo);
   const profiles = useSelector((state) => state.profile.profiles);

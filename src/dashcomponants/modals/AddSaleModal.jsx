@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {  useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { addSale, updateSale,getSales } from '../../redux/SaleSlice';
 import { Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button,FormControl, InputLabel, Select, MenuItem } from '@mui/material';

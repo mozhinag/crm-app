@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { addProduct, updateProduct } from '../../redux/ProductSlice';
 import { Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button, MenuItem, FormControl, Select, InputLabel } from '@mui/material';
 
 function AddproductModal({ isOpen, onClose, product = null }) {
   const dispatch = useDispatch();
-  const [successMessage, setSuccessMessage] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+  // const [successMessage, setSuccessMessage] = useState('');
+  // const [errorMessage, setErrorMessage] = useState('');
 
   const [productDetails, setproductDetails] = useState({
 
@@ -56,10 +56,10 @@ function AddproductModal({ isOpen, onClose, product = null }) {
 
   const handleSubmit = () => {
  
-    setSuccessMessage('');
-    setErrorMessage('');
-    successMessage('');
-    errorMessage('');
+    // setSuccessMessage('');
+    // setErrorMessage('');
+    // successMessage('');
+    // errorMessage('');
     let dispatchOperation;
     if (product && product._id) { 
       dispatchOperation = dispatch(updateProduct({ id: product._id, updateData: productDetails }));
@@ -70,12 +70,12 @@ function AddproductModal({ isOpen, onClose, product = null }) {
     dispatchOperation
       .unwrap() 
       .then(() => {
-        setSuccessMessage(product && product._id ? 'Product updated successfully.' : 'Product added successfully.');
+        // setSuccessMessage(product && product._id ? 'Product updated successfully.' : 'Product added successfully.');
         
       })
       .catch(error => {
         console.error('Operation failed:', error);
-        setErrorMessage('Operation failed. Please try again.');
+        // setErrorMessage('Operation failed. Please try again.');
       })
       .finally(() => {
         onClose();
