@@ -1,6 +1,6 @@
 import React, { useState,useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { addProduct, updateProduct } from '../../redux/ProductSlice';
+import { addProduct, updateProduct,getProducts } from '../../redux/ProductSlice';
 import { Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button, MenuItem, FormControl, Select, InputLabel } from '@mui/material';
 
 function AddproductModal({ isOpen, onClose, product = null }) {
@@ -55,34 +55,49 @@ function AddproductModal({ isOpen, onClose, product = null }) {
   };
 
   const handleSubmit = () => {
- 
-    // setSuccessMessage('');
-    // setErrorMessage('');
-    // successMessage('');
-    // errorMessage('');
-    let dispatchOperation;
-    if (product && product._id) { 
-      dispatchOperation = dispatch(updateProduct({ id: product._id, updateData: productDetails }));
-    } else { 
-      dispatchOperation = dispatch(addProduct(productDetails));
-    }
+
+   
   
-    dispatchOperation
-      .unwrap() 
-      .then(() => {
-        // setSuccessMessage(product && product._id ? 'Product updated successfully.' : 'Product added successfully.');
+    if (product && product._id) { 
+      dispatch(updateProduct({ id: product._id, updateData: productDetails }))
+        .unwrap()
+        .then(() => {
         
-      })
-      .catch(error => {
-        console.error('Operation failed:', error);
-        // setErrorMessage('Operation failed. Please try again.');
-      })
-      .finally(() => {
-        onClose();
-      });
+         
+          dispatch(getProducts()).catch(error => {
+            console.error('Failed to refresh product:', error);
+          
+          });
+        })
+        .catch(error => {
+          console.error('Failed to update product:', error);
+   
+        })
+        .finally(() => {
+          onClose(); 
+        });
+    } else if (!product) { 
+      dispatch(addProduct(productDetails))
+        .unwrap()
+        .then(() => {
+       
+        
+          dispatch(getProducts()).catch(error => {
+            console.error('Failed to refresh product:', error);
+          });
+        })
+        .catch(error => {
+          console.error('Failed to add product:', error);
+        })
+        .finally(() => {
+          onClose(); 
+        });
+    } else {
+      console.error('product ID is undefined. Cannot update product.');
+      onClose(); 
+    }
   };
   
-
 
   return (
     <Dialog open={isOpen} onClose={onClose}>
