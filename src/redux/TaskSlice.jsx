@@ -89,7 +89,7 @@ const TaskSlice = createSlice({
 
       })
       .addCase(updateTask.fulfilled, (state, action) => {
-        const index = state.list.findIndex(task => task.id === action.payload.id);
+        const index = state.list.findIndex(task => task._id === action.payload._id);
         if (index !== -1) {
 
           state.list[index] = { ...state.list[index], ...action.payload };
@@ -98,7 +98,7 @@ const TaskSlice = createSlice({
         }
       })
       .addCase(deleteTask.fulfilled, (state, action) => {
-        state.list.findIndex(task => task.id === action.payload);
+        state.list.findIndex(task => task._id === action.payload._id);
 
       });
   }

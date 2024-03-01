@@ -78,13 +78,13 @@ const UserListSlice = createSlice({
         state.list.push(action.payload);
       })
       .addCase(updateUserlist.fulfilled, (state, action) => {
-        const index = state.list.findIndex(userlist => userlist.id === action.payload.id);
+        const index = state.list.findIndex(userlist => userlist._id === action.payload._id);
         if (index !== -1) {
           state.list[index] = { ...state.list[index], ...action.payload };
         }
       })
       .addCase(deleteUserlist.fulfilled, (state, action) => {
-        state.list = state.list.filter(userlist => userlist.id !== action.payload); 
+        state.list = state.list.filter(userlist => userlist._id !== action.payload._id); 
       });
   }
 });

@@ -89,7 +89,7 @@ export const addTicket = createAsyncThunk(
                             })
                             .addCase(updateTicket.fulfilled, (state, action) => {
                                 state.isLoading = false;
-                                const index = state.tickets.findIndex(ticket => ticket.id === action.payload.id);
+                                const index = state.tickets.findIndex(ticket => ticket._id === action.payload._id);
                                 if (index !== -1) {
                                     state.tickets[index] = action.payload;
                                 }
@@ -105,7 +105,7 @@ export const addTicket = createAsyncThunk(
                             })
                             .addCase(deleteTickets.fulfilled, (state, action) => {
                                 state.isLoading = false;
-                                state.tickets = state.tickets.filter(ticket => ticket.id !== action.payload);
+                                state.tickets = state.tickets.filter(ticket => ticket._id !== action.payload._id);
                                 state.error = null;
                             })
                             .addCase(deleteTickets.rejected, (state, action) => {

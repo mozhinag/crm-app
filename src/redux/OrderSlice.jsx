@@ -83,14 +83,14 @@ const OrderSlice = createSlice({
         state.list.push(action.payload);
       })
       .addCase(updateOrder.fulfilled, (state, action) => {
-        const index = state.list.findIndex(order => order.id === action.payload.id);
+        const index = state.list.findIndex(order => order._id === action.payload._id);
         if (index !== -1) {
           state.list[index] = { ...state.list[index], ...action.payload };
         }
       })
       .addCase(deleteOrder.fulfilled, (state, action) => {
-        const deletedOrderId = action.payload.id;
-        state.list = state.list.filter(order => order.id !== deletedOrderId);
+        const deletedOrderId = action.payload._id;
+        state.list = state.list.filter(order => order._id !== deletedOrderId);
       });
       
   }

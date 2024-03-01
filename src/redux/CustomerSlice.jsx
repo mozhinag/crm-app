@@ -118,13 +118,13 @@ const CustomerSlice = createSlice({
         state.message = action.payload?.message || 'Could not fetch customers';
       })
       .addCase(updateCustomer.fulfilled, (state, action) => {
-        const index = state.customers.findIndex(customer => customer.id === action.payload.id);
+        const index = state.customers.findIndex(customer => customer._id === action.payload._id);
         if (index !== -1) {
           state.customers[index] = { ...state.customers[index], ...action.payload };
         }
       })
       .addCase(deleteCustomer.fulfilled, (state, action) => {
-        state.customers = state.customers.filter(customer => customer.id !== action.payload);
+        state.customers = state.customers.filter(customer => customer._id !== action.payload._id);
        
       });
   },

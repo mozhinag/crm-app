@@ -72,15 +72,16 @@ const ProductSlice = createSlice({
           state.list.push(action.payload);
         })
         .addCase(updateProduct.fulfilled, (state, action) => {
-          const index = state.list.findIndex(product => product.id === action.payload.id);
+          const index = state.list.findIndex(product => product._id === action.payload._id); 
           if (index !== -1) {
-            state.list[index] = { ...state.list[index], ...action.payload };
+            state.list[index] = action.payload; 
           }
         })
+        
         .addCase(deleteProduct.fulfilled, (state, action) => {
-          state.list = state.list.filter(product => product.id !== action.payload);
-        });
-    }
+          state.list = state.list.filter(product => product._id !== action.payload._id); 
+        })
+      } 
   });
 
   export default ProductSlice.reducer;

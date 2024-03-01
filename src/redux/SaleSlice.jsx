@@ -98,13 +98,13 @@ const SaleSlice = createSlice({
         state.list.push(action.payload);
       })
       .addCase(updateSale.fulfilled, (state, action) => {
-        const index = state.list.findIndex(sale => sale.id === action.payload.id);
+        const index = state.list.findIndex(sale => sale._id === action.payload._id);
         if (index !== -1) {
           state.list[index] = { ...state.list[index], ...action.payload };
         }
       })
       .addCase(deleteSale.fulfilled, (state, action) => {
-        state.list = state.list.filter(sale => sale.id !== action.payload);
+        state.list = state.list.filter(sale => sale._id !== action.payload._id);
       });
   }
 });
