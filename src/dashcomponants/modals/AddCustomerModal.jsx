@@ -4,7 +4,7 @@ import { createCustomer, updateCustomer,getCustomers } from '../../redux/Custome
 import { Modal, Box, Typography, Button, TextField, FormControl, RadioGroup, FormControlLabel, Radio, FormLabel, MenuItem } from '@mui/material';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
-import { useState } from 'react';
+// import { useState } from 'react';
 
 
 const modalStyle = {
